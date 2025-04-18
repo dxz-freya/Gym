@@ -42,7 +42,7 @@
 
                     <tr class="@(isDisabled ? "text-muted opacity-75" : "")">
                         <td>@session.ClassName</td>
-                        <td>@session.SessionDateTime?.ToString("HH:mm / MMM dd, yyyy")</td>
+                        <td>@session.SessionDateTime?.ToString("HH:mm / MMM dd, yyyy", System.Globalization.CultureInfo.InvariantCulture)</td>
                         <td>@session.RoomName</td>
                         <td>@session.BranchName</td>
                         <td>@session.TrainerName</td>

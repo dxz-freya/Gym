@@ -1,8 +1,9 @@
+
 @{
     Layout = "../Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Dashboard";
 }
-
+@using System.Globalization;
 @using GymManagement.Areas.Admin.Models
 @model AdminDashboardViewModel
 
@@ -151,10 +152,10 @@
     var date = kv.Key;
     var sessions = kv.Value;
     string title = date.Date == DateTime.Today
-    ? "Today's sessions (" + date.ToString("MMM dd, yyyy") + ")"
+    ? "Today's sessions (" + date.ToString("MMM dd, yyyy", CultureInfo.InvariantCulture) + ")"
     : (date.Date == DateTime.Today.AddDays(1)
-    ? "Tomorrow's sessions (" + date.ToString("MMM dd, yyyy") + ")"
-    : "Sessions (" + date.ToString("MMM dd, yyyy") + ")");
+    ? "Tomorrow's sessions (" + date.ToString("MMM dd, yyyy", CultureInfo.InvariantCulture) + ")"
+    : "Sessions (" + date.ToString("MMM dd, yyyy", CultureInfo.InvariantCulture) + ")");
 
     <div class="card p-4 mb-4">
         <div class="row align-items-center mb-3">

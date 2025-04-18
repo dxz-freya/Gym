@@ -71,7 +71,7 @@
                     <tr>
                         <td>@s.SessionName</td>
                         <td>@s.Trainer?.Name</td>
-                        <td>@s.SessionDateTime.ToString("HH:mm")</td>
+                        <td>@s.SessionDateTime.ToString("HH:mm",System.Globalization.CultureInfo.InvariantCulture)</td>
                         <td>@s.Room?.RoomName</td>
                         <td>@s.Capacity</td>
                         <td>@s.Bookings.Count</td>
@@ -101,7 +101,7 @@
                     <tr>
                         <td>@b.Customer.Name</td>
                         <td>@b.Session.SessionName</td>
-                        <td>@b.Session.SessionDateTime.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>@b.Session.SessionDateTime.ToString("yyyy-MM-dd HH:mm",System.Globalization.CultureInfo.InvariantCulture)</td>
                         <td>@b.Session.Room?.RoomName</td>
                         <td>@b.Status</td>
                         <td>

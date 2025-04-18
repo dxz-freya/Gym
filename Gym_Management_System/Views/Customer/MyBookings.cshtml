@@ -18,7 +18,7 @@
             {
                 <tr>
                     <td>@b.Session.SessionName</td>
-                    <td>@b.Session.SessionDateTime.ToString("g")</td>
+                    <td>@b.Session.SessionDateTime.ToString("g",System.Globalization.CultureInfo.InvariantCulture)</td>
                     <td>@b.Session.Trainer.Name</td>
                 </tr>
             }

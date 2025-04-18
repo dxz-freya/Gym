@@ -39,7 +39,7 @@
                     @foreach (var s in group)
                     {
                         <tr>
-                            <td>@s.SessionDateTime.ToString("HH:mm")</td>
+                            <td>@s.SessionDateTime.ToString("HH:mm",System.Globalization.CultureInfo.InvariantCulture)</td>
                             <td>@s.GymClass.ClassName</td>
                             <td>@s.Trainer.Name</td>
                             <td>@s.Room.RoomName</td>

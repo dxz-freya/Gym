@@ -138,7 +138,7 @@
                         <td>@b.Customer.Name</td>
                         <td>@b.Session.GymClass.ClassName</td>
                         <td>@b.Session.Trainer.Name</td>
-                        <td>@b.Session.SessionDateTime.ToString("MMM/dd/yyyy HH:mm")</td>
+                        <td>@b.Session.SessionDateTime.ToString("MMM/dd/yyyy HH:mm",System.Globalization.CultureInfo.InvariantCulture)</td>
                         <td>@b.Status</td>
                         <td>
                             @if (b.Status == BookingStatus.Pending)

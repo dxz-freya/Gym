@@ -1,5 +1,5 @@
 using System;
-
+using System.Globalization; 
 namespace GymManagement.ViewModels
 {
   public class ClassScheduleViewModel
@@ -14,6 +14,7 @@ namespace GymManagement.ViewModels
       public int BookedCount { get; set; }
       public bool IsBookedByUser { get; set; }
 
-      public string SessionDateFormatted => SessionDateTime?.ToString("HH:mm / MMM dd, yyyy") ?? "";
+      public string SessionDateFormatted =>
+      SessionDateTime?.ToString("HH:mm / MMM dd, yyyy", CultureInfo.InvariantCulture) ?? "";
   }
 }
