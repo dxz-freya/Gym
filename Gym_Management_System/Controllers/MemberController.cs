@@ -4,15 +4,19 @@ using Microsoft.EntityFrameworkCore;
 using GymManagement.Data;
 using GymManagement.Models;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
+
 
 [Authorize(Roles = "Customer")] // Only allow access to Customers
 public class MemberController : Controller
 {
   private readonly AppDbContext _dbContext;
+  private readonly UserManager<User> _userManager;
 
-  public MemberController(AppDbContext dbContext)
+  public MemberController(AppDbContext dbContext, UserManager<User> userManager)
   {
-    _dbContext = dbContext;
+      _dbContext = dbContext;
+      _userManager = userManager;
   }
 
   private Customer? GetCurrentCustomer()
@@ -110,25 +114,104 @@ public class MemberController : Controller
   }
 
   // 🔹 View Profile
-  public IActionResult Profile()
+  [Route("Account/ViewProfile")]
+  public async Task<IActionResult> Profile()
   {
-    var customer = GetCurrentCustomer();
-    if (customer == null) return NotFound("Customer not found.");
-    return View(customer);
+      var customer = GetCurrentCustomer();
+      if (customer == null) return NotFound("Customer not found.");
+      var roles = await _userManager.GetRolesAsync(customer);
+      var viewModel = new EditProfileViewModel
+      {
+          UserName = customer.UserName,
+          Name = customer.Name,
+          Email = customer.Email,
+          DOB = customer.DOB,
+          ProfileImageUrl = string.IsNullOrEmpty(customer.ProfileImageName)
+              ? "/uploads/profile/default.png"
+              : "/uploads/profile/" + customer.ProfileImageName,
+          RoleNames = roles.ToList()
+      };
+
+      return View("~/Views/Account/ViewProfile.cshtml", viewModel);
+  }
+  // GET: /Member/EditProfile
+  [HttpGet]
+  public async Task<IActionResult> EditProfile()
+  {
+      var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+      if (string.IsNullOrEmpty(userId)) return NotFound("User not logged in.");
+
+      var user = await _userManager.FindByIdAsync(userId);
+      if (user == null) return NotFound("User not found.");
+
+      var customer = _dbContext.Customers.FirstOrDefault(c => c.Id == userId);
+      if (customer == null) return NotFound("Customer not found.");
+
+      var roles = await _userManager.GetRolesAsync(user);
+
+      var viewModel = new EditProfileViewModel
+      {
+          UserName = user.UserName,
+          Name = customer.Name,
+          Email = customer.Email,
+          DOB = user.DOB,
+          ProfileImageUrl = string.IsNullOrEmpty(user.ProfileImageName)
+              ? "/uploads/profile/default.png"
+              : "/uploads/profile/" + user.ProfileImageName,
+          RoleNames = roles.ToList()
+      };
+
+      return View("~/Views/Account/EditProfile.cshtml", viewModel);
   }
 
   // 🔹 Edit Profile
   [HttpPost]
-  public IActionResult EditProfile(Customer updatedCustomer)
+  public async Task<IActionResult> EditProfile(EditProfileViewModel model)
   {
-    var customer = GetCurrentCustomer();
-    if (customer == null) return NotFound("Customer not found.");
+      var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+      if (string.IsNullOrEmpty(userId)) return NotFound("User not logged in.");
 
-    customer.Name = updatedCustomer.Name;
-    customer.Email = updatedCustomer.Email;
-    customer.MembershipType = updatedCustomer.MembershipType;
+      var user = await _userManager.FindByIdAsync(userId);
+      if (user == null) return NotFound("User not found.");
 
-    _dbContext.SaveChanges();
-    return RedirectToAction("Profile");
+      var customer = _dbContext.Customers.FirstOrDefault(c => c.Id == userId);
+      if (customer == null) return NotFound("Customer not found.");
+      if (model.ProfileImageFile != null && model.ProfileImageFile.Length > 0)
+      {
+          var uploadsDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/profile");
+          Directory.CreateDirectory(uploadsDir); 
+
+          var fileName = $"{Guid.NewGuid()}{Path.GetExtension(model.ProfileImageFile.FileName)}";
+          var filePath = Path.Combine(uploadsDir, fileName);
+
+          using (var stream = new FileStream(filePath, FileMode.Create))
+          {
+              await model.ProfileImageFile.CopyToAsync(stream);
+          }
+
+          user.ProfileImageName = fileName;
+      }
+      user.Name = model.Name;
+      user.Email = model.Email;
+      user.DOB = model.DOB;
+      customer.Name = model.Name;
+      customer.Email = model.Email;
+      if (!string.IsNullOrWhiteSpace(model.Password))
+      {
+          var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+          var result = await _userManager.ResetPasswordAsync(user, token, model.Password);
+          if (!result.Succeeded)
+          {
+              foreach (var error in result.Errors)
+              {
+                  ModelState.AddModelError("", error.Description);
+              }
+              return View("~/Views/Account/EditProfile.cshtml", model); 
+          }
+      }
+      await _userManager.UpdateAsync(user);
+      _dbContext.SaveChanges();
+
+      return RedirectToAction("Profile");
   }
 }

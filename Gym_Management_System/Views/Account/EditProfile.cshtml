@@ -78,8 +78,9 @@
 
 <div class="profile-form-wrapper text-center">
     <h2 class="mb-4" style="color:#ff6600;">EDIT PROFILE</h2>
-
-    <form asp-action="EditProfile" method="post" enctype="multipart/form-data" class="text-start mt-4">
+    
+    <form asp-action="EditProfile" asp-controller="Member" method="post" enctype="multipart/form-data">
+    @* <form asp-action="EditProfile" method="post" enctype="multipart/form-data" class="text-start mt-4"> *@
         @Html.AntiForgeryToken()
 
         <div class="text-center">
