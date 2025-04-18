@@ -1,0 +1,63 @@
+@model GymManagement.ViewModels.LoginViewModel
+
+@{
+  ViewData["Title"] = "Login";
+}
+
+<h2 class="text-white text-center mb-4">Login</h2>
+
+<form asp-action="Login" method="post" class="w-50 mx-auto" id="loginForm">
+  @Html.AntiForgeryToken()
+
+  <div class="form-group mb-3">
+    <label asp-for="Username" class="text-white"></label>
+    <input asp-for="Username" class="form-control" />
+    <span asp-validation-for="Username" class="text-danger"></span>
+  </div>
+
+  <div class="form-group mb-3">
+    <label asp-for="Password" class="text-white"></label>
+    <input asp-for="Password" class="form-control" />
+    <span asp-validation-for="Password" class="text-danger"></span>
+  </div>
+
+  <div class="form-group form-check mb-4">
+    <input asp-for="RememberMe" class="form-check-input" />
+    <label asp-for="RememberMe" class="form-check-label text-white">Remember Me</label>
+  </div>
+
+  @* ✅ Server-side summary for any general login errors *@
+  @if (!ViewData.ModelState.IsValid && ViewData.ModelState[string.Empty] != null)
+  {
+    <div class="text-danger mb-3">
+      @foreach (var error in ViewData.ModelState[string.Empty].Errors)
+      {
+        <div>@error.ErrorMessage</div>
+      }
+    </div>
+  }
+
+  <div class="d-flex justify-content-between align-items-center">
+    <button type="submit" class="btn btn-primary px-4">Login</button>
+    <a asp-controller="Account" asp-action="Register" class="btn btn-outline-light">Sign Up</a>
+  </div>
+</form>
+
+<div class="text-center my-4">
+  <span class="text-muted">or</span>
+</div>
+
+<h5 class="text-white text-center mb-3">Login with Google</h5>
+
+<form asp-controller="Account" asp-action="ExternalLogin" method="post" class="w-50 mx-auto">
+  @Html.AntiForgeryToken()
+  <input type="hidden" name="provider" value="Google" />
+  <input type="hidden" name="returnUrl" value="/" />
+  <button type="submit" class="btn btn-danger w-100">
+    <i class="fa fa-google me-2"></i> Login with Google
+  </button>
+</form>
+
+@section Scripts {
+  <partial name="_ValidationScriptsPartial" />
+}

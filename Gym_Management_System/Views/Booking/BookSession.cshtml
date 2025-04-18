@@ -1,0 +1,77 @@
+@using GymManagement.ViewModels
+@model List<ClassScheduleViewModel>
+
+@{
+    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+    ViewData["Title"] = "Book a class";
+}
+
+<h5 class="text-muted mb-4">Dashboard / <span class="fw-bold text-dark">Book a class</span></h5>
+
+<div class="card p-4 mb-5 w-100" style="background-color: #ffffff; border-radius: 24px; box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);">
+    @await Html.PartialAsync("_SessionFilterBar", new SessionFilterBarViewModel {
+        Branches = ViewBag.Branches as List<string> ?? new List<string>(),
+        SelectedBranch = ViewBag.SelectedBranch as string ?? "",
+        SearchTerm = ViewBag.SearchTerm as string ?? ""
+    })
+
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead class="text-muted">
+                <tr>
+                    <th>Session</th>
+                    <th>Time</th>
+                    <th>Room</th>
+                    <th>Branch</th>
+                    <th>Trainer</th>
+                    <th>Capacity</th>
+                    <th>Booked</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="text-dark">
+                @{
+                    var bookedIds = ViewBag.BookedSessionIds as List<int> ?? new List<int>();
+                }
+
+                @foreach (var session in Model.OrderBy(s => s.SessionDateTime))
+                {
+                    bool isFull = session.BookedCount >= session.Capacity;
+                    bool isBookedByUser = bookedIds.Contains(session.SessionId);
+                    bool isDisabled = isFull || isBookedByUser;
+
+                    <tr class="@(isDisabled ? "text-muted opacity-75" : "")">
+                        <td>@session.ClassName</td>
+                        <td>@session.SessionDateTime?.ToString("HH:mm / MMM dd, yyyy")</td>
+                        <td>@session.RoomName</td>
+                        <td>@session.BranchName</td>
+                        <td>@session.TrainerName</td>
+                        <td>@session.Capacity</td>
+                        <td>@session.BookedCount</td>
+                        <td>
+                            @if (isBookedByUser)
+                            {
+                                <span class="d-flex align-items-center gap-2 text-dark fw-semibold" style="font-size: 0.95rem;">
+                                    <i class="fas fa-check text-dark" style="font-size: 1rem;"></i> Booked
+                                </span>
+                            }
+                            else if (isFull)
+                            {
+                                <span class="text-muted">Full</span>
+                            }
+                            else
+                            {
+                                <form asp-action="BookSession" asp-controller="Booking" method="post" class="m-0">
+                                    <input type="hidden" name="sessionId" value="@session.SessionId" />
+                                    <button class="btn btn-dark btn-sm rounded-pill px-3" type="submit">
+                                        Book
+                                    </button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

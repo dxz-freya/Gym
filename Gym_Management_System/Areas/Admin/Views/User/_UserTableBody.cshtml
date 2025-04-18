@@ -1,0 +1,60 @@
+@model GymManagement.Areas.Admin.Models.UserViewModel
+
+@if (!Model.Users.Any())
+{
+    <tr>
+        <td colspan="5" class="text-muted text-center py-3">
+            <em>No matching users found.</em>
+        </td>
+    </tr>
+}
+else
+{
+    foreach (var user in Model.Users)
+    {
+        bool onlyAdmin = user.RoleNames.Count == 1 && user.RoleNames.Contains("Admin");
+        bool isAdmin = user.RoleNames.Contains("Admin");
+
+        <tr>
+            <td>@user.UserName</td>
+            <td>@user.Name</td>
+            <td>
+                @foreach (var role in user.RoleNames)
+                {
+                    <span class="badge bg-info text-dark mr-1">@role</span>
+                }
+            </td>
+            <td>@user.Email</td>
+            <td>
+                <div class="d-flex justify-content-center flex-wrap">
+                    <a asp-action="Edit" asp-route-id="@user.Id"
+                       class="btn btn-outline-secondary btn-sm mr-2 mb-1">edit</a>
+
+                    <!-- Delete -->
+                    <button type="button" class="btn btn-outline-danger btn-sm mr-2 mb-1"
+                            data-toggle="modal" data-target="#deleteModal"
+                            data-userid="@user.Id"
+                            @(onlyAdmin ? "disabled title='Only Admin role – cannot delete'" : "")>
+                        delete
+                    </button>
+
+                    <!-- Make Admin -->
+                    <button type="button" class="btn btn-outline-warning btn-sm mr-2 mb-1"
+                            data-toggle="modal" data-target="#makeAdminModal"
+                            data-userid="@user.Id"
+                            @(isAdmin ? "disabled title='User is already an Admin'" : "")>
+                        make admin
+                    </button>
+
+                    <!-- Remove Admin -->
+                    <button type="button" class="btn btn-outline-secondary btn-sm mb-1"
+                            data-toggle="modal" data-target="#removeAdminModal"
+                            data-userid="@user.Id"
+                            @(!isAdmin ? "disabled title='User is not an Admin'" : "")>
+                        remove admin
+                    </button>
+                </div>
+            </td>
+        </tr>
+    }
+}

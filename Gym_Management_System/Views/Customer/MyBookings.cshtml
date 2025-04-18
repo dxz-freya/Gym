@@ -1,0 +1,31 @@
+@using GymManagement.Models
+@using GymManagement.ViewModels
+@model List<Booking>
+<h2>My Bookings</h2>
+
+@if (Model.Any())
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Session</th>
+                <th>Date & Time</th>
+                <th>Trainer</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var b in Model)
+            {
+                <tr>
+                    <td>@b.Session.SessionName</td>
+                    <td>@b.Session.SessionDateTime.ToString("g")</td>
+                    <td>@b.Session.Trainer.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>You haven't booked any sessions yet.</p>
+}

@@ -1,0 +1,138 @@
+﻿@model GymManagement.Areas.Admin.Models.AddUserViewModel
+
+@{
+    ViewData["Title"] = "Add New User";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="p-4">
+    <div class="bg-white shadow-sm rounded-4 p-5">
+        <!-- 返回按钮 -->
+        <a asp-action="Index" class="btn btn-light mb-4">&larr; Back</a>
+
+        <h3 class="mb-4">Add New User</h3>
+
+        <form asp-action="Add" method="post">
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- 姓名 -->
+                    <div class="form-group mb-3">
+                        <label asp-for="Name" class="form-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <!-- 用户名 -->
+                    <div class="form-group mb-3">
+                        <label asp-for="Username" class="form-label"></label>
+                        <input asp-for="Username" class="form-control" />
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </div>
+
+                    <!-- 邮箱 -->
+                    <div class="form-group mb-3">
+                        <label asp-for="Email" class="form-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <!-- 密码 -->
+                    <div class="form-group mb-3">
+                        <label asp-for="Password" class="form-label"></label>
+                        <input asp-for="Password" class="form-control" id="Password" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+
+                        <div class="text-muted mt-2" id="passwordRules" style="display: none;">
+                            <small id="rule-length">❌ At least 6 characters</small><br />
+                            <small id="rule-digit">❌ At least one number</small><br />
+                            <small id="rule-lower">❌ At least one lowercase</small><br />
+                            <small id="rule-upper">❌ At least one uppercase</small><br />
+                            <small id="rule-special">❌ At least one special character</small>
+                        </div>
+                    </div>
+
+                    <!-- 确认密码 -->
+                    <div class="form-group mb-3">
+                        <label asp-for="ConfirmPassword" class="form-label"></label>
+                        <input asp-for="ConfirmPassword" class="form-control" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+
+                    <!-- 出生日期 -->
+                    <div class="form-group mb-3">
+                        <label asp-for="DOB" class="form-label"></label>
+                        <input asp-for="DOB" class="form-control" id="DOB" />
+                        <span asp-validation-for="DOB" class="text-danger"></span>
+                    </div>
+
+                    <!-- 角色选择 -->
+                    <div class="form-group mb-4">
+                        <label asp-for="SelectedRole" class="form-label"></label>
+                        <select asp-for="SelectedRole" class="form-control">
+                            @foreach (var role in Model.AvailableRoles)
+                            {
+                                <option value="@role">@role</option>
+                            }
+                        </select>
+                        <span asp-validation-for="SelectedRole" class="text-danger"></span>
+                    </div>
+
+                    <!-- 提交按钮 -->
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-dark px-4">Create</button>
+                        <a asp-action="Index" class="btn btn-outline-secondary px-4">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const passwordInput = document.getElementById("Password");
+        const rules = {
+            length: document.getElementById("rule-length"),
+            digit: document.getElementById("rule-digit"),
+            lower: document.getElementById("rule-lower"),
+            upper: document.getElementById("rule-upper"),
+            special: document.getElementById("rule-special")
+        };
+
+        passwordInput?.addEventListener("focus", () => {
+            document.getElementById("passwordRules").style.display = "block";
+        });
+
+        passwordInput?.addEventListener("input", () => {
+            const val = passwordInput.value;
+            rules.length.textContent = (val.length >= 6) ? "✅ At least 6 characters" : "❌ At least 6 characters";
+            rules.digit.textContent = (/\d/.test(val)) ? "✅ At least one number" : "❌ At least one number";
+            rules.lower.textContent = (/[a-z]/.test(val)) ? "✅ At least one lowercase" : "❌ At least one lowercase";
+            rules.upper.textContent = (/[A-Z]/.test(val)) ? "✅ At least one uppercase" : "❌ At least one uppercase";
+            rules.special.textContent = (/[^A-Za-z0-9]/.test(val)) ? "✅ At least one special character" : "❌ At least one special character";
+        });
+
+        // **DOB 客户端验证**
+        $('#DOB').on('input', function () {
+            const dob = $(this).val();
+            const today = new Date();
+            const dobDate = new Date(dob);
+            let age = today.getFullYear() - dobDate.getFullYear();
+            const m = today.getMonth() - dobDate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < dobDate.getDate())) {
+                age--;
+            }
+
+            if (age < 18) {
+                $('#DOB').next('span').text("You must be at least 18 years old.");
+            } else {
+                $('#DOB').next('span').text(""); // 如果有效，移除验证消息
+            }
+        });
+    </script>
+}

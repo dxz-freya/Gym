@@ -1,0 +1,124 @@
+@model GymManagement.ViewModels.RegisterViewModel
+
+@{
+  ViewData["Title"] = "Register";
+}
+
+<h2 class="text-white text-center mb-4">Sign Up</h2>
+
+<form asp-action="Register" method="post" class="w-50 mx-auto" id="registerForm">
+  @Html.AntiForgeryToken()
+
+  <div class="form-group mb-3">
+    <label asp-for="Name" class="text-white"></label>
+    <input asp-for="Name" class="form-control" />
+    <span asp-validation-for="Name" class="text-danger"></span>
+  </div>
+
+  <div class="form-group mb-3">
+    <label asp-for="Username" class="text-white"></label>
+    <input asp-for="Username" class="form-control" />
+    <span asp-validation-for="Username" class="text-danger"></span>
+  </div>
+
+  <div class="form-group mb-3">
+    <label asp-for="Email" class="text-white"></label>
+    <input asp-for="Email" class="form-control" />
+    <span asp-validation-for="Email" class="text-danger"></span>
+  </div>
+
+  <div class="form-group mb-3">
+    <label asp-for="Password" class="text-white"></label>
+    <input asp-for="Password" class="form-control" id="Password" />
+    <span asp-validation-for="Password" class="text-danger"></span>
+
+    <!-- ✅ Password Rules Feedback -->
+    <div class="text-white mt-2" id="passwordRules">
+      <small id="rule-length">❌ At least 6 characters</small><br />
+      <small id="rule-digit">❌ At least one number</small><br />
+      <small id="rule-lower">❌ At least one lowercase</small><br />
+      <small id="rule-upper">❌ At least one uppercase</small><br />
+      <small id="rule-special">❌ At least one special character</small>
+    </div>
+  </div>
+
+  <div class="form-group mb-3">
+    <label asp-for="ConfirmPassword" class="text-white"></label>
+    <input asp-for="ConfirmPassword" class="form-control" />
+    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+  </div>
+
+  <!-- ✅ Date of Birth -->
+  <div class="form-group mb-4">
+    <label asp-for="DOB" class="text-white"></label>
+    <input asp-for="DOB" class="form-control" />
+    <span asp-validation-for="DOB" class="text-danger"></span>
+  </div>
+
+  <div class="d-flex justify-content-between align-items-center">
+    <button type="submit" class="btn btn-primary px-4">Register</button>
+    <div class="text-white">
+      Already registered? <a asp-controller="Account" asp-action="Login" class="btn btn-outline-light">Log In</a>
+    </div>
+  </div>
+</form>
+
+@section Scripts {
+  <partial name="_ValidationScriptsPartial" />
+
+  <script>
+    $(function () {
+      // ✅ 密码强度提示初始化
+      const passwordInput = document.getElementById("Password");
+      const passwordRules = document.getElementById("passwordRules");
+
+      if (passwordInput && passwordRules) {
+        passwordRules.style.display = "none";
+
+        passwordInput.addEventListener("focus", function () {
+          passwordRules.style.display = "block";
+        });
+
+        passwordInput.addEventListener("input", function () {
+          const val = passwordInput.value;
+
+          document.getElementById("rule-length").textContent =
+            val.length >= 6 ? "✅ At least 6 characters" : "❌ At least 6 characters";
+
+          document.getElementById("rule-digit").textContent =
+            /\d/.test(val) ? "✅ At least one number" : "❌ At least one number";
+
+          document.getElementById("rule-lower").textContent =
+            /[a-z]/.test(val) ? "✅ At least one lowercase" : "❌ At least one lowercase";
+
+          document.getElementById("rule-upper").textContent =
+            /[A-Z]/.test(val) ? "✅ At least one uppercase" : "❌ At least one uppercase";
+
+          document.getElementById("rule-special").textContent =
+            /[^a-zA-Z0-9]/.test(val) ? "✅ At least one special character" : "❌ At least one special character";
+        });
+      }
+
+      // ✅ MinAge 客户端验证器注册
+      $.validator.addMethod("minage", function (value, element, params) {
+        if (!value) return true; // 留给 [Required] 去处理
+        const birthDate = new Date(value);
+        const today = new Date();
+
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+          age--;
+        }
+
+        return age >= parseInt(params);
+      });
+
+      $.validator.unobtrusive.adapters.addSingleVal("minage", "years");
+
+      $("#registerForm").removeData("validator");
+      $("#registerForm").removeData("unobtrusiveValidation");
+      $.validator.unobtrusive.parse("#registerForm");
+    });
+  </script>
+}

@@ -1,0 +1,182 @@
+@model GymManagement.Models.EditProfileViewModel
+
+@{
+    ViewData["Title"] = "Edit Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    body {
+        background-color: #0f0f0f;
+        color: #fff;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .profile-form-wrapper {
+        max-width: 720px;
+        margin: 60px auto;
+        background-color: #1a1a1a;
+        border-radius: 18px;
+        padding: 40px;
+        box-shadow: 0 0 30px rgba(255, 102, 0, 0.3);
+    }
+
+    .profile-avatar {
+        width: 160px;
+        height: 160px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 5px solid #ff6600;
+        cursor: pointer;
+        margin-bottom: 1.5rem;
+        transition: transform 0.3s;
+    }
+
+    .profile-avatar:hover {
+        transform: scale(1.05);
+    }
+
+    .form-label {
+        font-weight: bold;
+        color: #ff6600;
+    }
+
+    .form-control {
+        background-color: #222;
+        border: 1px solid #444;
+        color: #fff;
+    }
+
+    .btn-save {
+        background-color: #ff6600;
+        color: #000;
+        font-weight: bold;
+        border-radius: 8px;
+        padding: 10px 30px;
+    }
+
+    .btn-save:hover {
+        background-color: #e05200;
+        color: white;
+    }
+
+    .password-rules {
+        color: #ccc;
+        font-size: 0.9rem;
+        margin-top: 10px;
+        display: none;
+    }
+
+    .text-success {
+        color: #4CAF50 !important;
+    }
+
+    .text-danger {
+        color: #F44336 !important;
+    }
+</style>
+
+<div class="profile-form-wrapper text-center">
+    <h2 class="mb-4" style="color:#ff6600;">EDIT PROFILE</h2>
+
+    <form asp-action="EditProfile" method="post" enctype="multipart/form-data" class="text-start mt-4">
+        @Html.AntiForgeryToken()
+
+        <div class="text-center">
+            <label for="ProfileImageFile">
+                <img src="@Model.ProfileImageUrl" id="avatarPreview" class="profile-avatar" alt="Profile" />
+            </label>
+            <input type="file" asp-for="ProfileImageFile" class="d-none" id="ProfileImageFile"
+                accept=".jpg,.jpeg,.png,.gif,.bmp,.webp,image/*" />
+        </div>
+
+        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+        <div class="form-group mb-3">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="Email" class="form-label"></label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="DOB" class="form-label"></label>
+            <input asp-for="DOB" class="form-control" />
+            <span asp-validation-for="DOB" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="Password" class="form-label"></label>
+            <input asp-for="Password" class="form-control" id="Password" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+
+            <div id="passwordRules" class="password-rules">
+                <div id="rule-length">❌ At least 6 characters</div>
+                <div id="rule-digit">❌ At least one number</div>
+                <div id="rule-lower">❌ At least one lowercase</div>
+                <div id="rule-upper">❌ At least one uppercase</div>
+                <div id="rule-special">❌ At least one special character</div>
+            </div>
+        </div>
+
+        <div class="form-group mb-4">
+            <label asp-for="ConfirmPassword" class="form-label"></label>
+            <input asp-for="ConfirmPassword" class="form-control" />
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-save">Save Changes</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.getElementById('ProfileImageFile').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/bmp', 'image/webp'];
+
+                if (!validTypes.includes(file.type)) {
+                    alert("Only image files (JPG, PNG, GIF, BMP, WEBP) are allowed.");
+                    this.value = '';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = e => document.getElementById('avatarPreview').src = e.target.result;
+                reader.readAsDataURL(file);
+            }
+        });
+
+        const passwordInput = document.getElementById("Password");
+        const rules = {
+            length: document.getElementById("rule-length"),
+            digit: document.getElementById("rule-digit"),
+            lower: document.getElementById("rule-lower"),
+            upper: document.getElementById("rule-upper"),
+            special: document.getElementById("rule-special")
+        };
+
+        passwordInput?.addEventListener("focus", () => {
+            document.getElementById("passwordRules").style.display = "block";
+        });
+
+        passwordInput?.addEventListener("input", () => {
+            const val = passwordInput.value;
+            rules.length.textContent = val.length >= 6 ? "✅ At least 6 characters" : "❌ At least 6 characters";
+            rules.digit.textContent = /\d/.test(val) ? "✅ At least one number" : "❌ At least one number";
+            rules.lower.textContent = /[a-z]/.test(val) ? "✅ At least one lowercase" : "❌ At least one lowercase";
+            rules.upper.textContent = /[A-Z]/.test(val) ? "✅ At least one uppercase" : "❌ At least one uppercase";
+            rules.special.textContent = /[^a-zA-Z0-9]/.test(val) ? "✅ At least one special character" : "❌ At least one special character";
+        });
+    </script>
+}

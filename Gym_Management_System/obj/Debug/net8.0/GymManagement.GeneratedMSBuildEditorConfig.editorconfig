@@ -1,0 +1,231 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = GymManagement
+build_property.RootNamespace = GymManagement
+build_property.ProjectDir = /Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = /Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System
+build_property._RazorSourceGeneratorDebug = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Areas/Admin/Views/Admin/CreateSession.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvQWRtaW4vQ3JlYXRlU2Vzc2lvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Areas/Admin/Views/Admin/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvQWRtaW4vRGFzaGJvYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Areas/Admin/Views/Admin/ManageGymBranches.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvQWRtaW4vTWFuYWdlR3ltQnJhbmNoZXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Areas/Admin/Views/Admin/ManageMembers.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvQWRtaW4vTWFuYWdlTWVtYmVycy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Areas/Admin/Views/Admin/ManageSessions.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvQWRtaW4vTWFuYWdlU2Vzc2lvbnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Areas/Admin/Views/Admin/ManageTrainers.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvQWRtaW4vTWFuYWdlVHJhaW5lcnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Areas/Admin/Views/Shared/_AdminLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvU2hhcmVkL19BZG1pbkxheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Areas/Admin/Views/Shared/_Pagination.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvU2hhcmVkL19QYWdpbmF0aW9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Areas/Admin/Views/User/Add.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvVXNlci9BZGQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Areas/Admin/Views/User/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvVXNlci9FZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Areas/Admin/Views/User/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvVXNlci9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Areas/Admin/Views/User/_UserTableBody.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvVXNlci9fVXNlclRhYmxlQm9keS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Areas/Admin/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Areas/Admin/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/Account/AccessDenied.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9BY2Nlc3NEZW5pZWQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/Account/EditProfile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9FZGl0UHJvZmlsZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9Mb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/Account/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9SZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/Account/ViewProfile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9WaWV3UHJvZmlsZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/Booking/BookSession.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQm9va2luZy9Cb29rU2Vzc2lvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/ClassSchedule/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ2xhc3NTY2hlZHVsZS9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/ClassSchedule/SessionDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ2xhc3NTY2hlZHVsZS9TZXNzaW9uRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/Customer/Bookings.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ3VzdG9tZXIvQm9va2luZ3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/Customer/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ3VzdG9tZXIvRGFzaGJvYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/Customer/Membership.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ3VzdG9tZXIvTWVtYmVyc2hpcC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/Customer/MyBookings.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ3VzdG9tZXIvTXlCb29raW5ncy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/Customer/Payments.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ3VzdG9tZXIvUGF5bWVudHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/Customer/Profile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ3VzdG9tZXIvUHJvZmlsZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/Customer/SessionCalendar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ3VzdG9tZXIvU2Vzc2lvbkNhbGVuZGFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/Customer/TrainerList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ3VzdG9tZXIvVHJhaW5lckxpc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/GymBranch/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvR3ltQnJhbmNoL0NyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/GymBranch/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvR3ltQnJhbmNoL0RldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/GymBranch/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvR3ltQnJhbmNoL0VkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/GymBranch/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvR3ltQnJhbmNoL0luZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/Home/Contact.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Db250YWN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/Receptionist/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVjZXB0aW9uaXN0L0Rhc2hib2FyZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/Receptionist/ManageBookings.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVjZXB0aW9uaXN0L01hbmFnZUJvb2tpbmdzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/Receptionist/TimetableBooking.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVjZXB0aW9uaXN0L1RpbWV0YWJsZUJvb2tpbmcuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/Shared/_LoginPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19Mb2dpblBhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/Shared/_SessionFilterBar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19TZXNzaW9uRmlsdGVyQmFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/Shared/_SidebarLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19TaWRlYmFyTGF5b3V0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/Trainer/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVHJhaW5lci9EYXNoYm9hcmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/Trainer/EditProfile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVHJhaW5lci9FZGl0UHJvZmlsZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/Trainer/MyGymClasses.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVHJhaW5lci9NeUd5bUNsYXNzZXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/Trainer/SessionDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVHJhaW5lci9TZXNzaW9uRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/Trainer/ViewSessions.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVHJhaW5lci9WaWV3U2Vzc2lvbnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/xinxin/Documents/canada/FDU/Fourth Semester/6844-ProgrammingForTheInternet/New/Gym/Gym_Management_System/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-fia5gb99vz

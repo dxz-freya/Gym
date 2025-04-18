@@ -1,0 +1,31 @@
+@using GymManagement.Models
+@using GymManagement.ViewModels
+@model List<Session>
+@{
+    Layout = "_Layout";
+}
+
+<h2>Session Calendar</h2>
+<div id="calendar"></div>
+
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css' rel='stylesheet' />
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js'></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            events: [
+                @foreach (var session in Model)
+                {
+                    @: {
+                    @: title: "@session.SessionName",
+                    @: start: "@session.SessionDateTime.ToString("s")",
+                    @: },
+                }
+            ]
+        });
+        calendar.render();
+    });
+</script>

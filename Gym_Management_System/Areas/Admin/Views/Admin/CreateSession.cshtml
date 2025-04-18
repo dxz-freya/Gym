@@ -1,0 +1,180 @@
+@model GymManagement.Areas.Admin.Models.CreateSessionViewModel
+@{
+    ViewData["Title"] = "Create a session";
+    Layout = "../Shared/_AdminLayout.cshtml";
+}
+
+<div class="p-4">
+    <div class="bg-white shadow-sm rounded-4 p-5">
+        <a asp-area="Admin" asp-controller="Admin" asp-action="Dashboard" class="btn btn-light mb-4">&larr; Back</a>
+
+        <h3 class="mb-4">Create a session</h3>
+
+        <form asp-action="CreateSession" asp-controller="Admin" method="post" class="needs-validation" novalidate>
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+            <div class="row">
+                <div class="col-md-6"><!-- Session Name -->
+                    <div class="form-group mb-3">
+                        <label class="form-label">Session Name</label>
+                        <input asp-for="SessionName" class="form-control" placeholder="e.g. Morning Yoga with Ella"
+                            required />
+                        <span asp-validation-for="SessionName" class="text-danger"></span>
+                    </div>
+
+
+
+
+                    <!-- Gym Class -->
+                    <div class="form-group mb-3">
+                        <label class="form-label">Gym class</label>
+                        <select asp-for="GymClassId" asp-items="Model.GymClassList" class="form-select" required>
+                            <option value="">Select</option>
+                        </select>
+                        <span asp-validation-for="GymClassId" class="text-danger"></span>
+                    </div>
+
+                    <!-- Trainer -->
+                    <div class="form-group mb-3">
+                        <label class="form-label">Trainer</label>
+                        <select asp-for="TrainerId" asp-items="Model.TrainerList" class="form-select" required>
+                            <option value="">Select</option>
+                        </select>
+                        <span asp-validation-for="TrainerId" class="text-danger"></span>
+                    </div>
+
+                    <!-- Branch -->
+                    <div class="form-group mb-3">
+                        <label class="form-label">Branch</label>
+                        <input id="branchNameDisplay" type="text" class="form-control"
+                            value="@(Model.BranchName ?? "N/A")" readonly />
+
+                    </div>
+
+
+                    <!-- Category -->
+                    <div class="form-group mb-3">
+                        <label class="form-label">Category</label>
+                        <select asp-for="Category" asp-items="Model.CategoryList" class="form-select" required>
+                            <option value="">Select</option>
+                        </select>
+                        <span asp-validation-for="Category" class="text-danger"></span>
+                    </div>
+
+                    <!-- Room -->
+                    <div class="form-group mb-3">
+                        <label class="form-label">Room</label>
+                        <select asp-for="RoomId" asp-items="Model.RoomList" class="form-select" required>
+                            <option value="">Select</option>
+                        </select>
+                        <span asp-validation-for="RoomId" class="text-danger"></span>
+                    </div>
+
+                    <!-- Capacity -->
+                    <div class="form-group mb-3">
+                        <label class="form-label">Capacity</label>
+                        <input asp-for="Capacity" class="form-control" readonly />
+                        <span asp-validation-for="Capacity" class="text-danger"></span>
+                    </div>
+
+                    <!-- Session Time -->
+                    <div class="form-group mb-4">
+                        <label class="form-label">Session time</label>
+                        <input asp-for="SessionDateTime" class="form-control" type="datetime-local"
+                            min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" required />
+                        <span asp-validation-for="SessionDateTime" class="text-danger"></span>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="form-group d-flex justify-content-between">
+                        <button type="submit" class="btn btn-dark px-4">Save & Publish</button>
+                        <a asp-area="Admin" asp-controller="Admin" asp-action="Dashboard"
+                            class="btn btn-outline-secondary px-4">Cancel</a>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // 1. GymClass ➜ Filter Trainers
+        document.querySelector('[name="GymClassId"]').addEventListener('change', function () {
+            const classId = this.value;
+            const trainerSelect = document.querySelector('[name="TrainerId"]');
+
+            fetch(`/Admin/Admin/GetTrainersByClass?gymClassId=${classId}`)
+                .then(res => res.json())
+                .then(data => {
+                    trainerSelect.innerHTML = '<option value="">Select</option>';
+                    data.forEach(t => {
+                        const option = document.createElement('option');
+                        option.value = t.id;
+                        option.textContent = t.name;
+                        trainerSelect.appendChild(option);
+                    });
+
+                    // Clear branch/room/capacity
+                    document.querySelector('#branchNameDisplay').textContent = "";
+                    document.querySelector('[name="RoomId"]').innerHTML = '<option value="">Select</option>';
+                    document.querySelector('[name="Capacity"]').value = '';
+                });
+        });
+
+        // 2. Trainer ➜ Branch + Rooms
+        document.querySelector('[name="TrainerId"]').addEventListener('change', function () {
+            const trainerId = this.value;
+
+            // Update Branch
+            fetch(`/Admin/Admin/GetTrainerBranch?trainerId=${trainerId}`)
+                .then(res => res.json())
+                .then(data => {
+                    document.querySelector('#branchNameDisplay').value = data.branch || "N/A";
+                });
+
+            // Update Rooms
+            fetch(`/Admin/Admin/GetRoomsByTrainer?trainerId=${trainerId}`)
+                .then(res => res.json())
+                .then(data => {
+                    const roomSelect = document.querySelector('[name="RoomId"]');
+                    roomSelect.innerHTML = '<option value="">Select</option>';
+                    data.forEach(r => {
+                        const option = document.createElement('option');
+                        option.value = r.roomId;
+                        option.textContent = r.roomName;
+                        option.setAttribute('data-capacity', r.capacity);
+                        roomSelect.appendChild(option);
+                    });
+
+                    document.querySelector('[name="Capacity"]').value = '';
+                });
+        });
+
+        // 3. Room ➜ Capacity
+        document.querySelector('[name="RoomId"]').addEventListener('change', function () {
+            const selected = this.options[this.selectedIndex];
+            const capacity = selected.getAttribute('data-capacity');
+            if (capacity) document.querySelector('[name="Capacity"]').value = capacity;
+        });
+
+
+    </script>
+
+    <script>
+        document.querySelector('[name="GymClassId"]').addEventListener('change', function () {
+            console.log("GymClass changed:", this.value);
+        });
+
+        document.querySelector('[name="TrainerId"]').addEventListener('change', function () {
+            console.log("Trainer changed:", this.value);
+        });
+
+        document.querySelector('[name="RoomId"]').addEventListener('change', function () {
+            console.log("Room changed:", this.value);
+        });
+    </script>
+
+}

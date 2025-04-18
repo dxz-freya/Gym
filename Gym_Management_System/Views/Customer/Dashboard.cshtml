@@ -1,0 +1,171 @@
+@model GymManagement.ViewModels.CustomerDashboardViewModel
+
+@{
+    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container-fluid">
+    <h5 class="text-muted mb-4">Dashboard / <span class="fw-bold text-dark">Home</span></h5>
+
+    <!-- Upcoming Sessions -->
+    <div class="card p-4 mb-5" style="background-color: #ffffff; border-radius: 24px; box-shadow: 0 1px 0 rgba(0,0,0,0.1);">
+        <h6 class="fw-bold text-success mb-3">Upcoming Gym Sessions</h6>
+
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead class="text-muted">
+                    <tr>
+                        <th>Session</th>
+                        <th>Time</th>
+                        <th>Room</th>
+                        <th>Branch</th>
+                        <th>Trainer</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var booking in Model.UpcomingBookings)
+                    {
+                        <tr>
+                            <td>
+                                @booking.SessionName
+                            </td>
+                            <td>@booking.SessionDateFormatted</td>
+                            <td>@booking.RoomName</td>
+                            <td>@booking.BranchName</td>
+                            <td>@booking.TrainerName</td>
+                            <td>
+                            <div class="d-flex gap-2 align-items-center">
+                                @if (booking.Status == "CheckedIn")
+                                {
+                                    <span class="d-flex align-items-center gap-2 text-dark fw-semibold" style="font-size: 0.95rem;">
+                                        <i class="fas fa-check text-dark" style="font-size: 1rem;"></i> Checked in
+                                    </span>
+                                }
+                                else if (booking.Status == "Canceled")
+                                {
+                                    <span class="text-muted" style="font-size: 0.95rem;">Canceled</span>
+                                }
+                                else
+                                {
+                                    <form asp-action="CheckIn" asp-controller="Customer" method="post" class="m-0">
+                                        <input type="hidden" name="bookingId" value="@booking.BookingId" />
+                                        <button type="submit" class="btn btn-dark px-3 py-1 rounded-pill" style="font-size: 0.9rem;">
+                                            Check in
+                                        </button>
+                                    </form>
+
+                                    <form asp-action="CancelBooking" asp-controller="Customer" method="post" class="m-0"
+                                        onsubmit="return confirm('Are you sure to cancel this booking?');">
+                                        <input type="hidden" name="bookingId" value="@booking.BookingId" />
+                                        <button type="submit" class="btn btn-outline-secondary px-3 py-1 rounded-pill" style="font-size: 0.9rem;">
+                                            Cancel
+                                        </button>
+                                    </form>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Bottom Cards -->
+    <div class="row g-4 align-items-stretch">
+        <!-- Weekly Activity Card -->
+        <div class="col-md-6">
+            <div class="card p-4 h-100 w-100" style="border-radius: 24px; background-color: #ffffff; box-shadow: 0 1px 0 rgba(0,0,0,0.1);">
+                <h6 class="fw-bold mb-3 text-primary">This Week’s Activity</h6>
+                <div class="row g-3">
+                    @foreach (var day in Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>())
+                    {
+                        var count = Model.WeeklyActivity.ContainsKey(day) ? Model.WeeklyActivity[day] : 0;
+                        <div class="col text-center">
+                            <div style="
+                                    height: 50px;
+                                    width: 32px;
+                                    margin: 0 auto;
+                                    background-color: @(count > 0 ? "#3B82F6" : "#E5E7EB");
+                                    border-radius: 12px;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    font-size: 0.9rem;
+                                    color: white;">
+                                @(count > 0 ? count : "")
+                            </div>
+                            <div class="text-muted mt-1" style="font-size: 0.8rem;">@day.ToString().Substring(0,3)</div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Membership Card -->
+        <div class="col-md-6">
+            <div class="card p-4 h-100 w-100" style="border-radius: 24px; background-color: #ffffff; box-shadow: 0 1px 0 rgba(0,0,0,0.1);">
+                <a asp-action="Membership" asp-controller="Customer" class="text-decoration-none">
+                    <div class="card text-white p-4"
+                         style="
+                             border-radius: 24px;
+                             background: linear-gradient(135deg, #8054FF, #0B3EF4, #D059EE, #DE5FFF, #8DA6FF);
+                             background-size: 400% 400%;
+                             animation: gradientShift 20s ease infinite;
+                             box-shadow: 0 10px 24px rgba(0,0,0,0.2);">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <div class="text-white-50 mb-1" style="font-size: 0.95rem;">
+                                    Membership Status: @Model.MembershipStatus
+                                </div>
+                                <h4 class="fw-bold mb-1">Enlight membership</h4>
+                                <div class="text-white-50 mt-2">
+                                    Expires: @Model.MembershipExpiry?.ToString("yyyy.MM.dd")
+                                </div>
+                            </div>
+
+                            <form asp-action="RenewMembership" asp-controller="Customer" method="post"
+                                  style="position: relative; z-index: 3;"
+                                  onsubmit="event.stopPropagation();">
+                                <input type="hidden" name="returnTo" value="Membership" />
+                                <button type="submit"
+                                        class="btn d-flex align-items-center gap-2 px-4 py-2"
+                                        style="
+                                            background-color: #000;
+                                            color: #fff;
+                                            border: none;
+                                            border-radius: 16px;
+                                            font-weight: 500;
+                                            font-size: 1rem;">
+                                    💰 Renew
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- toast -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <script>
+        window.addEventListener("DOMContentLoaded", function () {
+            showToast(`@TempData["SuccessMessage"]`);
+        });
+    </script>
+}
+
+@section Scripts {
+    <style>
+        keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+    </style>
+}

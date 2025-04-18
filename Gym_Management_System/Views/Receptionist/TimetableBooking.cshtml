@@ -1,0 +1,62 @@
+@model GymManagement.ViewModels.TimetableBookingViewModel
+
+@{
+    ViewData["Title"] = "Class Timetable Booking";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var grouped = Model.Sessions.GroupBy(s => s.SessionDateTime.Date);
+}
+
+<section class="services-section spad">
+    <div class="container">
+        <div class="section-title text-center">
+            <span>Schedule</span>
+            <h2>Click to Book for Customer</h2>
+        </div>
+
+        <form method="get">
+            <div class="form-group text-center mb-5">
+                <label class="text-white">Select Customer:</label>
+                <select asp-for="SelectedCustomerId" asp-items="Model.CustomerList" class="form-control w-50 mx-auto">
+                    <option disabled selected>-- Select Customer --</option>
+                </select>
+            </div>
+        </form>
+
+        @foreach (var group in grouped)
+        {
+            <h4 class="text-warning mb-3">@group.Key.ToString("yyyy-MM-dd")</h4>
+            <table class="table table-bordered table-dark text-center">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Time</th>
+                        <th>Class</th>
+                        <th>Trainer</th>
+                        <th>Room</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var s in group)
+                    {
+                        <tr>
+                            <td>@s.SessionDateTime.ToString("HH:mm")</td>
+                            <td>@s.GymClass.ClassName</td>
+                            <td>@s.Trainer.Name</td>
+                            <td>@s.Room.RoomName</td>
+                            <td>
+                                <form asp-action="BookFromTimetable" method="post" class="d-inline">
+                                    <input type="hidden" name="customerId" value="@Model.SelectedCustomerId" />
+                                    <input type="hidden" name="sessionId" value="@s.SessionId" />
+                                    <button class="btn btn-sm btn-success" @(string.IsNullOrEmpty(Model.SelectedCustomerId) ?
+                                                                                                           "disabled" : "")>
+                                Book
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                                }
+                </tbody>
+            </table>
+        }
+    </div>
+</section>

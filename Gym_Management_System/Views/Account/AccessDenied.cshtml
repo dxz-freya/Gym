@@ -1,0 +1,28 @@
+@{
+    ViewData["Title"] = "Access Denied";
+}
+
+<section class="breadcrumb-section set-bg" data-setbg="~/img/breadcrumb-bg.jpg">
+    <div class="container text-white text-center">
+        <h2>Access Denied</h2>
+        <div class="breadcrumb-text">
+            <a asp-controller="Home" asp-action="Index"><i class="fa fa-home"></i> Home</a>
+            <span class="mx-2">/</span>
+            <span>Access Denied</span>
+        </div>
+    </div>
+</section>
+
+<section class="contact-section spad">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <div class="section-title">
+                    <h2 class="text-danger mb-4">🚫 Sorry, you don’t have permission to access this page.</h2>
+                    <p>Please contact the site administrator if you believe this is a mistake.</p>
+                    <a asp-controller="Home" asp-action="Index" class="primary-btn mt-3">Return to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

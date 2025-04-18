@@ -1,0 +1,117 @@
+@model GymManagement.Models.EditProfileViewModel
+@{
+    ViewData["Title"] = "My Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    body {
+        background-color: #0f0f0f;
+        color: #fff;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .profile-container {
+        max-width: 700px;
+        margin: 60px auto;
+        text-align: center;
+    }
+
+    .profile-title {
+        font-size: 52px;
+        font-weight: 900;
+        color: #ff6600;
+        margin-bottom: 40px;
+        text-shadow: 1px 1px 3px black;
+    }
+
+    .profile-avatar {
+        width: 180px;
+        height: 180px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 6px solid #ff6600;
+        margin-bottom: 50px;
+        box-shadow: 0 0 20px rgba(255, 102, 0, 0.5);
+    }
+
+    .profile-table {
+        width: 100%;
+        max-width: 550px;
+        margin: 0 auto 40px auto;
+        text-align: left;
+        border-collapse: collapse;
+    }
+
+    .profile-table td {
+        padding: 16px 0;
+        border-bottom: 1px solid #666;
+        vertical-align: middle;
+    }
+
+    .profile-label {
+        color: #ff6600;
+        font-weight: bold;
+        width: 180px;
+        padding-right: 40px;
+        text-align: right;
+        font-size: 1.05rem;
+    }
+
+    .profile-value {
+        color: #fff;
+        text-align: center;
+        font-size: 1.1rem;
+        font-weight: 500;
+    }
+
+    .edit-btn {
+        margin-top: 30px;
+        padding: 14px 50px;
+        font-size: 18px;
+        font-weight: bold;
+        background-color: #ff6600;
+        border: none;
+        border-radius: 10px;
+        color: #000;
+        box-shadow: 0 4px 12px rgba(255, 102, 0, 0.4);
+        transition: all 0.3s ease;
+    }
+
+    .edit-btn:hover {
+        background-color: #e05200;
+        color: white;
+        box-shadow: 0 6px 18px rgba(255, 102, 0, 0.5);
+    }
+</style>
+
+<div class="profile-container">
+    <div class="profile-title">MY PROFILE</div>
+
+    <img src="@Model.ProfileImageUrl" class="profile-avatar" alt="Profile Picture" />
+
+    <table class="profile-table">
+        <tr>
+            <td class="profile-label">ROLE</td>
+            <td class="profile-value">@string.Join(", ", Model.RoleNames)</td>
+        </tr>
+        <tr>
+            <td class="profile-label">USERNAME</td>
+            <td class="profile-value">@Model.UserName</td>
+        </tr>
+        <tr>
+            <td class="profile-label">FULL NAME</td>
+            <td class="profile-value">@Model.Name</td>
+        </tr>
+        <tr>
+            <td class="profile-label">EMAIL</td>
+            <td class="profile-value">@Model.Email</td>
+        </tr>
+        <tr>
+            <td class="profile-label">DATE OF BIRTH</td>
+            <td class="profile-value">@Model.DOB?.ToString("yyyy-MM-dd")</td>
+        </tr>
+    </table>
+
+    <a asp-action="EditProfile" class="btn edit-btn">EDIT</a>
+</div>

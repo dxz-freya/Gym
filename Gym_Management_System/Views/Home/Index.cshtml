@@ -1,0 +1,67 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!-- Hero Section Begin -->
+<section class="hero-section mt-0 pt-0">
+    <div class="hs-slider owl-carousel">
+        <!-- Slide 1 -->
+        <div class="hs-item set-bg" data-setbg="/img/CQF3KSWZ4ML64HHLQMQKZPR5NI.jpg">
+            <div class="container-fluid px-0">
+                <div class="row no-gutters">
+                    <div class="col-lg-6 offset-lg-6">
+                        <div class="hi-text text-white">
+                            <span>Shape your body</span>
+                            <h1>Be <strong>strong</strong> training hard</h1>
+                            <a asp-controller="Account" asp-action="Login" class="primary-btn">Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="hs-item set-bg" data-setbg="/img/1588409996071.jpeg">
+            <div class="container-fluid px-0">
+                <div class="row no-gutters">
+                    <div class="col-lg-6 offset-lg-6">
+                        <div class="hi-text text-white">
+                            <span>Shape your body</span>
+                            <h1>Book <strong>a session</strong> now</h1>
+                            <a asp-controller="Book" asp-action="Details" class="primary-btn">Appointment</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Hero Section End -->
+
+
+@section PagePadding {
+    <style>
+        main[role="main"] {
+            padding-top: 0 !important;
+        }
+    </style>
+}
+
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const logosContainer = document.querySelector(".logos");
+            if (logosContainer) {
+                logosContainer.innerHTML += logosContainer.innerHTML;
+                logosContainer.style.transform = "translateX(0)";
+                function duplicateLogos() {
+                    const clone = logosContainer.cloneNode(true);
+                    clone.classList.add("duplicate");
+                    logosContainer.parentElement.appendChild(clone);
+                }
+                duplicateLogos();
+            }
+        });
+    </script>
+}

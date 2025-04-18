@@ -1,0 +1,18 @@
+@using GymManagement.Models
+@using GymManagement.ViewModels
+@model List<Trainer>
+<h2>Our Trainers</h2>
+<div class="row">
+@foreach (var trainer in Model)
+{
+    <div class="col-md-4 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">@trainer.Name</h5>
+                <p class="card-text"><strong>Specialization:</strong> @trainer.Specialization</p>
+                <p class="card-text">@trainer.Bio</p>
+            </div>
+        </div>
+    </div>
+}
+</div>

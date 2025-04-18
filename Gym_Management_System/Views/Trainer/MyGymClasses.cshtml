@@ -1,0 +1,177 @@
+@model List<GymManagement.ViewModels.GymClassViewModel>
+@{
+    ViewData["Title"] = "My Gym Classes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <style>
+        .class-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .class-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px #00ffffaa;
+        }
+        .img-preview {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            margin-top: 10px;
+            border-radius: 6px;
+        }
+        .modal-content label,
+        .modal-content input,
+        .modal-content textarea {
+            color: #000;
+        }
+    </style>
+    <script>
+        function previewImage(input, previewId) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById(previewId).src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+}
+
+<section class="breadcrumb-section set-bg" data-setbg="@Url.Content("~/img/breadcrumb-bg.jpg")">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb-text">
+                    <h2>My Gym Classes</h2>
+                    <div class="bt-option">
+                        <a asp-controller="Home" asp-action="Index">Home</a>
+                        <span>Trainer</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="services-section spad">
+    <div class="container">
+        <div class="text-end mb-3">
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createModal">+ Add Gym Class</button>
+        </div>
+
+        <div class="row gy-4">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-6">
+                    <div class="d-flex bg-dark rounded overflow-hidden shadow-lg class-card" style="min-height: 250px;">
+                        <div class="flex-shrink-0" style="width: 40%; background: url('@Url.Content("~/uploads/gymclass/" + (item.ImageName ?? "class-default.jpg"))') center/cover no-repeat;">
+                        </div>
+
+                        <div class="flex-grow-1 p-4 d-flex flex-column justify-content-between">
+                            <div>
+                                <h4 class="fw-bold text-white mb-2">@item.ClassName</h4>
+                                <p class="text-light small">@item.Description</p>
+                                <p class="text-info mb-0"><strong>Duration:</strong> @item.Duration mins</p>
+                                <p class="text-info"><strong>Available:</strong> @item.AvailableTime.ToString("yyyy-MM-dd")</p>
+                            </div>
+
+                            <div>
+                                <button class="btn btn-sm btn-info me-2" data-bs-toggle="modal" data-bs-target="#editModal-@item.GymClassId">Edit</button>
+                                <form asp-action="DeleteGymClass" asp-controller="Trainer" method="post" class="d-inline" onsubmit="return confirm('Are you sure?');">
+                                    <input type="hidden" name="id" value="@item.GymClassId" />
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit Modal -->
+                <div class="modal fade" id="editModal-@item.GymClassId" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form asp-action="EditGymClass" asp-controller="Trainer" method="post" enctype="multipart/form-data">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Edit Gym Class</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" name="GymClassId" value="@item.GymClassId" />
+                                    <div class="mb-3">
+                                        <label>Class Name</label>
+                                        <input class="form-control" name="ClassName" value="@item.ClassName" />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Available Time</label>
+                                        <input class="form-control" type="date" name="AvailableTime" value="@item.AvailableTime.ToString("yyyy-MM-dd")" />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Duration (mins)</label>
+                                        <input class="form-control" name="Duration" value="@item.Duration" />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Description</label>
+                                        <textarea class="form-control" name="Description">@item.Description</textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Image Upload (replace)</label>
+                                        <input class="form-control" type="file" name="ImageFile" onchange="previewImage(this, 'edit-preview-@item.GymClassId')" />
+                                        <img class="img-preview" id="edit-preview-@item.GymClassId" src="@Url.Content("~/uploads/gymclass/" + (item.ImageName ?? "class-default.jpg"))" />
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button class="btn btn-primary" type="submit">Update</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Create Modal -->
+<div class="modal fade" id="createModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="CreateGymClass" asp-controller="Trainer" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create Gym Class</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label>Class Name</label>
+                        <input class="form-control" name="ClassName" />
+                    </div>
+                    <div class="mb-3">
+                        <label>Available Time</label>
+                        <input class="form-control" type="date" name="AvailableTime" />
+                    </div>
+                    <div class="mb-3">
+                        <label>Duration (mins)</label>
+                        <input class="form-control" name="Duration" />
+                    </div>
+                    <div class="mb-3">
+                        <label>Description</label>
+                        <textarea class="form-control" name="Description"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label>Image Upload</label>
+                        <input class="form-control" type="file" name="ImageFile" onchange="previewImage(this, 'create-preview')" />
+                        <img id="create-preview" class="img-preview" src="@Url.Content("~/uploads/gymclass/class-default.jpg")" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-success" type="submit">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

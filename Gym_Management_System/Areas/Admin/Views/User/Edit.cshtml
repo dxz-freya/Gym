@@ -1,0 +1,68 @@
+@model GymManagement.Areas.Admin.Models.UserEditViewModel
+@{
+    ViewData["Title"] = "Edit User Info";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="bg-white shadow-sm rounded-4 p-5">
+        <a asp-action="Index" class="btn btn-light mb-4">&larr; Back</a>
+
+        <h3 class="mb-4">Edit user info</h3>
+
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="Id" />
+
+            @* 显示表单级错误 *@
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+            <div class="row">
+                <div class="col-md-6">
+
+                    <!-- Username -->
+                    <div class="form-group">
+                        <label asp-for="Username"></label>
+                        <input type="text" class="form-control" asp-for="Username" readonly />
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </div>
+
+                    <!-- Full Name -->
+                    <div class="form-group">
+                        <label asp-for="FullName"></label>
+                        <input type="text" class="form-control" asp-for="FullName" />
+                        <span asp-validation-for="FullName" class="text-danger"></span>
+                    </div>
+
+                    <!-- Role Dropdown -->
+                    <div class="form-group">
+                        <label asp-for="SelectedRole"></label>
+                        <select class="form-control" asp-for="SelectedRole">
+                            @foreach (var role in Model.AvailableRoles)
+                            {
+                                <option value="@role">@role</option>
+                            }
+                        </select>
+                        <span asp-validation-for="SelectedRole" class="text-danger"></span>
+                    </div>
+
+                    <!-- Contact -->
+                    <div class="form-group">
+                        <label asp-for="Contact"></label>
+                        <input type="text" class="form-control" asp-for="Contact" />
+                        <span asp-validation-for="Contact" class="text-danger"></span>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="form-group mt-4 d-flex justify-content-between">
+                        <button type="submit" class="btn btn-dark px-4">Save</button>
+                        <a asp-action="Index" class="btn btn-outline-secondary px-4">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

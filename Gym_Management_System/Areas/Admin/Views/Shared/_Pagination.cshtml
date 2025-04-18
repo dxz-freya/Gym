@@ -1,0 +1,49 @@
+@model GymManagement.ViewModels.PagingInfo
+
+@{
+    var totalPages = Model.TotalPages;
+    var currentPage = Model.CurrentPage;
+}
+
+@if (totalPages > 1)
+{
+    <div class="d-flex justify-content-center mt-4 mb-4">
+        <ul class="pagination pagination-sm custom-pagination mb-0">
+            <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                <a class="page-link" href="?page=@(currentPage - 1)">◀</a>
+            </li>
+
+            @if (currentPage > 2)
+            {
+                <li class="page-item disabled"><span class="page-link">...</span></li>
+            }
+
+            @if (currentPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="?page=@(currentPage - 1)">@(currentPage - 1)</a>
+                </li>
+            }
+
+            <li class="page-item active">
+                <span class="page-link">@currentPage</span>
+            </li>
+
+            @if (currentPage < totalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="?page=@(currentPage + 1)">@(currentPage + 1)</a>
+                </li>
+            }
+
+            @if (currentPage < totalPages - 1)
+            {
+                <li class="page-item disabled"><span class="page-link">...</span></li>
+            }
+
+            <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                <a class="page-link" href="?page=@(currentPage + 1)">▶</a>
+            </li>
+        </ul>
+    </div>
+}

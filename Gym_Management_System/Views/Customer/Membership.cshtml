@@ -1,0 +1,71 @@
+@model GymManagement.Models.Customer
+
+@{
+    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+    ViewData["Title"] = "My Membership";
+}
+
+<div class="container">
+    <h3 class="mb-4">Your Membership</h3>
+
+    <!-- Membership Card -->
+    <div class="card p-4 text-white"
+         style="
+            background: linear-gradient(135deg, #8054FF, #0B3EF4, #D059EE, #DE5FFF, #8DA6FF);
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite;
+            border-radius: 32px;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+         ">
+
+        <div class="d-flex align-items-center justify-content-between">
+            <div>
+                <div class="text-white-50 mb-1" style="font-size: 0.95rem;">
+                    Membership Status: @Model.MembershipStatus
+                </div>
+                <h4 class="fw-bold mb-1">Enlight membership</h4>
+                <div class="text-white-50 mt-2">
+                    Expires: @Model.MembershipExpiry?.ToString("yyyy.MM.dd")
+                </div>
+            </div>
+
+            <form asp-action="RenewMembership" asp-controller="Customer" method="post"
+                  style="position: relative; z-index: 3;"
+                  onsubmit="event.stopPropagation();">
+                <input type="hidden" name="returnTo" value="Membership" />
+                <button type="submit"
+                        class="btn d-flex align-items-center gap-2 px-4 py-2"
+                        style="
+                            background-color: #000;
+                            color: #fff;
+                            border: none;
+                            border-radius: 16px;
+                            font-weight: 500;
+                            font-size: 1rem;
+                        ">
+                    💰 Renew
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Toast -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <script>
+        window.addEventListener("DOMContentLoaded", function () {
+            showToast(`@TempData["SuccessMessage"]`);
+        });
+    </script>
+}
+
+@section Scripts {
+    <style>
+        @@keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+    </style>
+}

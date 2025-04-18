@@ -1,0 +1,32 @@
+<!-- Edit.cshtml in GymManagement/Views/Customer folder-->
+@model Customer
+
+<div class="d-flex justify-content-center align-items-center">
+  <div class="login-container p-4 shadow rounded" style="width: 400px; background-color: #f8f9fa;">
+    <h2 class="text-center mb-4">Edit Customer</h2>
+
+    <form asp-controller="Customer" asp-action="Edit" method="post">
+      <input type="hidden" asp-for="Id" />
+
+      <div class="form-group mb-3 d-flex flex-column">
+        <label class="mb-1">Customer ID:</label>
+        <input class="form-control" value="@Model.Id" readonly />
+      </div>
+
+      <div class="form-group mb-3 d-flex flex-column">
+        <label class="mb-1" asp-for="Name">Customer Name:</label>
+        <input asp-for="Name" class="form-control" required />
+      </div>
+
+      <div class="form-group mb-3 d-flex flex-column">
+        <label class="mb-1" asp-for="Email">Email:</label>
+        <input asp-for="Email" class="form-control" type="email" required />
+      </div>
+
+      <div class="d-flex justify-content-center mt-4">
+        <button type="submit" class="btn custom-btn me-3">Save</button>
+        <button type="button" class="btn btn-secondary" onclick="window.history.back();">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

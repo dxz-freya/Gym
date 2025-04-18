@@ -1,0 +1,271 @@
+@{
+    Layout = "../Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Dashboard";
+}
+
+@using GymManagement.Areas.Admin.Models
+@model AdminDashboardViewModel
+
+@{
+    Dictionary<SessionCategory, string> categoryIcons = new()
+{
+{ SessionCategory.Yoga, "fa-person-praying" },
+{ SessionCategory.Pilates, "fa-child-reaching" },
+{ SessionCategory.StrengthTraining, "fa-dumbbell" },
+{ SessionCategory.Cardio, "fa-heart-pulse" },
+{ SessionCategory.HIIT, "fa-bolt" },
+{ SessionCategory.DanceFitness, "fa-music" },
+{ SessionCategory.Cycling, "fa-bicycle" }
+};
+}
+
+<style>
+    .dashboard-card {
+        padding: 1.25rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        transition: transform 0.2s ease-in-out;
+        min-height: 120px;
+    }
+
+    .dashboard-card:hover {
+        transform: translateY(-3px);
+    }
+
+    .dashboard-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.3rem;
+    }
+
+    .dashboard-number {
+        font-size: 2.2rem;
+        font-weight: 800;
+    }
+
+    .session-name {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .session-card {
+        border-radius: 1rem;
+        border: 1px solid #eee;
+        padding: 1rem;
+        background: #fff;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+        height: 100%;
+    }
+
+    .session-card .badge {
+        margin-right: 0.25rem;
+    }
+
+    .session-card .session-name {
+        font-weight: 600;
+        font-size: 1.05rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .session-card .session-stats {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.8rem;
+        color: #666;
+        text-align: center;
+    }
+
+    .session-card .session-stats div {
+        flex: 1;
+    }
+
+    .session-card {
+        border-radius: 1rem;
+        border: 1px solid #eee;
+        padding: 1rem;
+        background: #fff;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+        height: 100%;
+    }
+
+    .session-stats div {
+        flex: 1;
+        text-align: center;
+    }
+
+
+    @@media (max-width: 767.98px) {
+        .summary-row .col-md-4 {
+            flex: 0 0 50%;
+            max-width: 50%;
+            margin-bottom: 1rem;
+        }
+
+        .session-table-wrapper {
+            display: none;
+        }
+    }
+
+    @@media (max-width: 375px) {
+        .summary-row .col-md-4 {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+    }
+
+    @@media (min-width: 768px) {
+        .session-cards-wrapper {
+            display: none;
+        }
+    }
+</style>
+
+<!-- Summary Cards -->
+<div class="row mb-4 summary-row">
+    <div class="col-md-4 mb-3 mb-md-0">
+        <div class="bg-dark text-white dashboard-card text-center">
+            <div class="dashboard-title">Total Sessions</div>
+            <div id="totalSessions" class="dashboard-number">@Model.TotalSessions</div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3 mb-md-0">
+        <div class="bg-primary text-white dashboard-card text-center">
+            <div class="dashboard-title">Total Members</div>
+            <div id="totalMembers" class="dashboard-number">@Model.TotalMembers</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="bg-dark text-white dashboard-card text-center">
+            <div class="dashboard-title">Total Trainers</div>
+            <div id="totalTrainers" class="dashboard-number">@Model.TotalTrainers</div>
+        </div>
+    </div>
+</div>
+
+<!-- Responsive Session Display -->
+@foreach (var kv in Model.UpcomingSessionsByDate)
+{
+    var date = kv.Key;
+    var sessions = kv.Value;
+    string title = date.Date == DateTime.Today
+    ? "Today's sessions (" + date.ToString("MMM dd, yyyy") + ")"
+    : (date.Date == DateTime.Today.AddDays(1)
+    ? "Tomorrow's sessions (" + date.ToString("MMM dd, yyyy") + ")"
+    : "Sessions (" + date.ToString("MMM dd, yyyy") + ")");
+
+    <div class="card p-4 mb-4">
+        <div class="row align-items-center mb-3">
+            <div class="col-md-9 col-12">
+                <h5 class="fw-bold text-success mb-0">@title</h5>
+            </div>
+            <div class="col-md-3 col-12 text-md-right text-left mt-2 mt-md-0">
+                <a asp-action="CreateSession" asp-controller="Admin" asp-route-date="@date.ToString("yyyy-MM-dd")"
+                    class="btn btn-success btn-sm rounded-pill px-4">
+                    + Create a session
+                </a>
+            </div>
+        </div>
+
+        <!-- Table View for ≥768px -->
+        <div class="table-responsive session-table-wrapper">
+            <table class="table table-hover bg-white text-center align-middle session-table">
+                <thead class="table-light">
+                    <tr>
+                        <th>Session</th>
+                        <th>Time</th>
+                        <th>Trainer</th>
+                        <th>Branch</th>
+                        <th>Room</th>
+                        <th>Capacity</th>
+                        <th>Bookings</th>
+                        <th>Attendance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var s in sessions)
+                    {
+                        <tr>
+                            <td class="text-start">
+                                <span class="session-name">
+                                    <i
+                                        class="fa-solid @(categoryIcons.TryGetValue(s.Category, out var icon) ? icon : "fa-calendar")"></i>
+                                    @s.SessionName
+                                </span>
+                            </td>
+                            <td>@s.SessionDateTime.ToString("HH:mm / MMM dd, yyyy")</td>
+                            <td>@s.Trainer?.Name</td>
+                            <td>@s.Trainer?.GymBranch?.BranchName</td>
+                            <td>@s.Room?.RoomName</td>
+                            <td>@s.Capacity</td>
+                            <td>@s.Bookings.Count</td>
+                            <td>@s.Bookings.Count(b => b.Status != BookingStatus.Pending && b.Status != BookingStatus.Canceled)
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+
+        <!-- Card View for <768px -->
+        <div class="row session-cards-wrapper">
+            @foreach (var s in sessions)
+            {
+                <div class="col-12 col-sm-6 mb-3">
+                    <div class="session-card text-center">
+                        <div class="text-black-50 mb-1" style="font-size: 1.2rem;">
+                            <i
+                                class="fa-solid @(categoryIcons.TryGetValue(s.Category, out var icon) ? icon : "fa-calendar")"></i>
+                        </div>
+                        <div class="fw-semibold">@s.SessionName</div>
+                        <div class="text-muted small mb-2">@s.SessionDateTime.ToString("HH:mm / MMM dd, yyyy")</div>
+
+                        <div class="mb-2 d-flex justify-content-center flex-wrap gap-1">
+                            <span class="badge bg-light text-muted px-3 py-1 rounded-pill">@s.Room?.RoomName</span>
+                            <span
+                                class="badge bg-light text-muted px-3 py-1 rounded-pill">@s.Trainer?.GymBranch?.BranchName</span>
+                        </div>
+
+                        <div class="fw-semibold mb-2">@s.Trainer?.Name</div>
+
+                        <div class="session-stats mt-3 d-flex text-muted small">
+                            <div class="flex-fill">
+                                <div class="fw-bold text-dark">@s.Capacity</div>
+                                <div>Max</div>
+                            </div>
+                            <div class="flex-fill">
+                                <div class="fw-bold text-dark">0</div>
+                                <div>Bookings</div>
+                            </div>
+                            <div class="flex-fill">
+                                <div class="fw-bold text-dark">0</div>
+                                <div>Attended</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
+}
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/1.9.3/countUp.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const options = { useEasing: true, useGrouping: true, separator: ',', decimal: '.' };
+            const count1 = new CountUp('totalSessions', 0, @Model.TotalSessions, 0, 2.0, options);
+            const count2 = new CountUp('totalMembers', 0, @Model.TotalMembers, 0, 2.0, options);
+            const count3 = new CountUp('totalTrainers', 0, @Model.TotalTrainers, 0, 2.0, options);
+            if (!count1.error) count1.start(); else console.error(count1.error);
+            if (!count2.error) count2.start(); else console.error(count2.error);
+            if (!count3.error) count3.start(); else console.error(count3.error);
+        });
+    </script>
+    <script src="https://kit.fontawesome.com/your-kit-code.js" crossorigin="anonymous"></script>
+}

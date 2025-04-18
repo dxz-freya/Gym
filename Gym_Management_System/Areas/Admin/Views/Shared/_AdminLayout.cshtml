@@ -1,0 +1,440 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject Microsoft.AspNetCore.Mvc.Rendering.IHtmlHelper Html
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject UserManager<GymManagement.Models.User> UserManager
+@inject SignInManager<GymManagement.Models.User> SignInManager
+
+@{
+    var currentController = HttpContextAccessor.HttpContext?.Request.RouteValues["controller"]?.ToString();
+    var currentAction = HttpContextAccessor.HttpContext?.Request.RouteValues["action"]?.ToString();
+    var currentUser = await UserManager.GetUserAsync(User);
+    var displayName = currentUser?.Name ?? User.Identity?.Name ?? "User";
+    var avatarUrl = string.IsNullOrEmpty(currentUser?.ProfileImageName)
+    ? "/uploads/profile/default.png"
+    : "/uploads/profile/" + currentUser.ProfileImageName;
+
+    var roles = currentUser != null ? await UserManager.GetRolesAsync(currentUser) : new List<string>();
+    bool isOnlyAdmin = roles.Count == 1 && roles.Contains("Admin");
+
+    string logoController = "Home";
+    string logoAction = "Index";
+
+    if (!isOnlyAdmin)
+    {
+        if (roles.Contains("Trainer")) { logoController = "Trainer"; logoAction = "Dashboard"; }
+        else if (roles.Contains("Receptionist")) { logoController = "Receptionist"; logoAction = "ManageBookings"; }
+        else if (roles.Contains("Customer")) { logoController = "Customer"; logoAction = "Dashboard"; }
+    }
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - GymManagement</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/style.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        html,
+        body {
+            background-color: #f3f4f6;
+            color: #212529;
+            margin: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .layout-container {
+            display: flex;
+            flex-direction: row;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .bg-sidebar {
+            background-color: #f3f4f6;
+            width: 250px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-right: 1px solid #ddd;
+            padding: 1rem;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            background-color: #ffffff;
+            padding: 2rem;
+        }
+
+        .nav-icon {
+            background-color: #e9ecef;
+            border-radius: 0.5rem;
+            padding: 0.4rem;
+            margin-right: 0.6rem;
+            width: 32px;
+            height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+        }
+
+        .sidebar-user {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            gap: 0.6rem;
+            padding: 0.5rem 0.8rem;
+            border-radius: 10px;
+            transition: background 0.3s ease;
+        }
+
+        .sidebar-user:hover {
+            background-color: #e9ecef;
+        }
+
+        .user-dropdown {
+            position: absolute;
+            bottom: 70px;
+            left: 20px;
+            width: 220px;
+            background: #fff;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            z-index: 1050;
+            display: none;
+            flex-direction: column;
+        }
+
+        .user-dropdown a,
+        .user-dropdown button {
+            padding: 0.8rem 1rem;
+            color: #333;
+            text-decoration: none;
+            border-bottom: 1px solid #eee;
+            background: none;
+            border: none;
+            text-align: left;
+            width: 100%;
+        }
+
+        .user-dropdown a:hover,
+        .user-dropdown button:hover {
+            background: #f8f9fa;
+        }
+
+        /* Mobile Specific Additions */
+        .mobile-logo {
+            display: none;
+        }
+
+        .mobile-avatar {
+            display: none;
+        }
+
+        .mobile-nav,
+        .mobile-menu-panel {
+            display: none;
+        }
+
+        @@media (max-width: 767.98px) {
+
+
+            .bg-sidebar {
+                width: 72px;
+                padding: 1rem 0.5rem;
+                align-items: center;
+            }
+
+            .nav-link {
+                flex-direction: column;
+                justify-content: center;
+                padding: 0.5rem 0.25rem;
+                font-size: 0.75rem;
+                text-align: center;
+            }
+
+            .nav-link .nav-icon {
+                margin: 0 0 0.3rem 0;
+            }
+
+            .sidebar-user span {
+                display: none;
+            }
+
+            .user-dropdown {
+                left: 10px;
+                width: 180px;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .bg-sidebar img {
+                max-width: 36px;
+            }
+
+            .mobile-logo {
+                display: block;
+                margin-bottom: 1rem;
+            }
+
+            .mobile-avatar {
+                display: block;
+                padding: 0.5rem;
+                cursor: pointer;
+                margin-top: auto;
+            }
+
+            .user-dropdown.d-md-none {
+                position: fixed;
+                bottom: 70px;
+                left: 10px;
+                width: 180px;
+                background: #fff;
+                border-radius: 10px;
+                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+                display: none;
+                flex-direction: column;
+                z-index: 9999;
+            }
+        }
+
+        @@media (max-width: 375px) {
+            .layout-container {
+                flex-direction: column;
+            }
+
+            .bg-sidebar {
+                display: none !important;
+            }
+
+            .bg-sidebar {
+                width: 100%;
+                height: auto;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-around;
+                border-right: none;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .user-dropdown {
+                position: fixed;
+                top: 60px;
+                right: 10px;
+                left: auto;
+            }
+
+            .mobile-nav {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background-color: #f3f4f6;
+                padding: 0.75rem 1rem;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .mobile-nav img {
+                height: 40px;
+            }
+
+            .mobile-nav button {
+                font-size: 1.5rem;
+                background: none;
+                border: none;
+            }
+
+            .mobile-menu-panel {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                left: 10px;
+                right: 10px;
+                background: #fff;
+                border-radius: 10px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                z-index: 9999;
+                overflow: hidden;
+            }
+
+            .mobile-menu-panel a,
+            .mobile-menu-panel form button {
+                padding: 0.75rem 1rem;
+                border: none;
+                background: none;
+                width: 100%;
+                text-align: left;
+                border-bottom: 1px solid #eee;
+                color: #333;
+            }
+
+            .mobile-menu-divider {
+                height: 1px;
+                background-color: #ccc;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Mobile Nav -->
+    <div class="mobile-nav d-md-none">
+        <a asp-area="" asp-controller="@logoController" asp-action="@logoAction">
+            <img src="~/img/logo.png" alt="Gym Logo" />
+        </a>
+        <button id="hamburgerTrigger"><i class="fas fa-bars"></i></button>
+    </div>
+
+    <div class="mobile-menu-panel d-md-none" id="mobileMenuPanel">
+        <a asp-area="Admin" asp-controller="Admin" asp-action="Dashboard">Overview</a>
+        <a asp-area="Admin" asp-controller="Admin" asp-action="CreateSession">Create a session</a>
+        <a asp-area="Admin" asp-controller="User" asp-action="Index">My employees</a>
+        <div class="mobile-menu-divider"></div>
+        <a asp-area="" asp-controller="Account" asp-action="ViewProfile">View Profile</a>
+        <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" class="m-0">
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+
+    <div class="layout-container">
+        <!-- Sidebar -->
+        <div class="bg-sidebar">
+            <!-- Mobile Logo -->
+            <div class="mobile-logo d-md-none text-center">
+                <a asp-area="" asp-controller="@logoController" asp-action="@logoAction">
+                    <img src="~/img/logo.png" alt="Gym Logo" style="max-height: 40px;" />
+                </a>
+            </div>
+
+            <div class="d-flex flex-column align-items-center align-items-md-stretch w-100">
+                <div class="text-center mb-4 d-none d-md-block">
+                    <a asp-area="" asp-controller="@logoController" asp-action="@logoAction">
+                        <img src="~/img/logo.png" alt="Gym Logo"
+                            style="max-width: 180px; filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.3));" />
+                    </a>
+                </div>
+
+                <ul class="nav flex-column w-100 text-center text-md-left">
+                    @{
+                        string NavLinkClass(string ctrl, string act) =>
+                        (currentController == ctrl && currentAction == act)
+                        ? "nav-link text-dark fw-bold active bg-white rounded px-3 py-2 shadow-sm"
+                        : "nav-link text-dark px-3 py-2";
+                    }
+                    <li class="nav-item">
+                        <a class="@NavLinkClass("Admin", "Dashboard")" asp-area="Admin" asp-controller="Admin"
+                            asp-action="Dashboard">
+                            <span class="nav-icon"><i class="fas fa-chart-pie"></i></span> <span
+                                class="d-none d-md-inline">Overview</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="@NavLinkClass("Admin", "CreateSession")" asp-area="Admin" asp-controller="Admin"
+                            asp-action="CreateSession">
+                            <span class="nav-icon"><i class="fas fa-dumbbell"></i></span> <span
+                                class="d-none d-md-inline">Create a session</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="@NavLinkClass("User", "Index")" asp-area="Admin" asp-controller="User"
+                            asp-action="Index">
+                            <span class="nav-icon"><i class="fas fa-user"></i></span> <span
+                                class="d-none d-md-inline">My employees</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Desktop Avatar -->
+            <div class="position-relative mt-auto d-none d-md-block">
+                <div class="sidebar-user" id="userAvatarToggle">
+                    <img src="@avatarUrl" class="rounded-circle" width="36" height="36" style="object-fit: cover;" />
+                    <span class="fw-bold">@displayName</span>
+                </div>
+                <div class="user-dropdown" id="userDropdown">
+                    <a asp-area="" asp-controller="Account" asp-action="ViewProfile">View Profile</a>
+                    <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" class="m-0">
+                        <button type="submit">Logout</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Mobile Avatar -->
+            <div class="mobile-avatar d-md-none text-center" id="mobileUserAvatarToggle">
+                <img src="@avatarUrl" class="rounded-circle" width="36" height="36" style="object-fit: cover;" />
+            </div>
+            <div class="user-dropdown d-md-none" id="mobileUserDropdown">
+                <a asp-area="" asp-controller="Account" asp-action="ViewProfile">View Profile</a>
+                <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" class="m-0">
+                    <button type="submit">Logout</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="main-content">
+            @RenderBody()
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const avatarToggle = document.getElementById('userAvatarToggle');
+            const dropdown = document.getElementById('userDropdown');
+            const mobileToggle = document.getElementById('mobileUserAvatarToggle');
+            const mobileDropdown = document.getElementById('mobileUserDropdown');
+
+            if (avatarToggle && dropdown) {
+                avatarToggle.addEventListener('click', () => {
+                    dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+                });
+            }
+
+            if (mobileToggle && mobileDropdown) {
+                mobileToggle.addEventListener('click', () => {
+                    mobileDropdown.style.display = mobileDropdown.style.display === 'flex' ? 'none' : 'flex';
+                });
+            }
+
+            document.addEventListener('click', function (e) {
+                if (!avatarToggle?.contains(e.target) && !dropdown?.contains(e.target)) {
+                    if (dropdown) dropdown.style.display = 'none';
+                }
+                if (!mobileToggle?.contains(e.target) && !mobileDropdown?.contains(e.target)) {
+                    if (mobileDropdown) mobileDropdown.style.display = 'none';
+                }
+            });
+
+            const hamburger = document.getElementById('hamburgerTrigger');
+            const menuPanel = document.getElementById('mobileMenuPanel');
+            if (hamburger && menuPanel) {
+                hamburger.addEventListener('click', () => {
+                    menuPanel.style.display = (menuPanel.style.display === 'flex') ? 'none' : 'flex';
+                });
+                document.addEventListener('click', function (e) {
+                    if (!hamburger.contains(e.target) && !menuPanel.contains(e.target)) {
+                        menuPanel.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>

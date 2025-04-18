@@ -1,0 +1,131 @@
+@model GymManagement.ViewModels.ReceptionistDashboardViewModel
+
+@{
+    ViewData["Title"] = "Receptionist Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<section class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb-text">
+                    <h2>Reception Dashboard</h2>
+                    <div class="bt-option">
+                        <a asp-controller="Home" asp-action="Index">Home</a>
+                        <span>Dashboard</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="services-section spad">
+    <div class="container">
+        <div class="section-title text-center">
+            <span>Overview</span>
+            <h2>Today at Your Branch</h2>
+        </div>
+
+        <div class="row mb-5">
+            <div class="col-md-4">
+                <div class="bg-primary text-white text-center p-4 rounded">
+                    <h4>Total Bookings Today</h4>
+                    <h2>@Model.TodayTotalBookings</h2>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="bg-success text-white text-center p-4 rounded">
+                    <h4>Checked In</h4>
+                    <h2>@Model.TodayCheckedIn</h2>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="bg-danger text-white text-center p-4 rounded">
+                    <h4>No Shows</h4>
+                    <h2>@(Model.TodayTotalBookings - Model.TodayCheckedIn)</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title text-center">
+            <h3>Today's Sessions</h3>
+        </div>
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Session</th>
+                    <th>Trainer</th>
+                    <th>Time</th>
+                    <th>Room</th>
+                    <th>Capacity</th>
+                    <th>Bookings</th>
+                    <th>Checked In</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var s in Model.TodaySessions)
+                {
+                    <tr>
+                        <td>@s.SessionName</td>
+                        <td>@s.Trainer?.Name</td>
+                        <td>@s.SessionDateTime.ToString("HH:mm")</td>
+                        <td>@s.Room?.RoomName</td>
+                        <td>@s.Capacity</td>
+                        <td>@s.Bookings.Count</td>
+                        <td>@s.Bookings.Count(b => b.Status == BookingStatus.CheckedIn)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="section-title text-center mt-5">
+            <h3>Quick Check-In</h3>
+        </div>
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Member Name</th>
+                    <th>Session</th>
+                    <th>Date & Time</th>
+                    <th>Room</th>
+                    <th>Status</th>
+                    <th>Check-In</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var b in Model.CheckInBookings)
+                {
+                    <tr>
+                        <td>@b.Customer.Name</td>
+                        <td>@b.Session.SessionName</td>
+                        <td>@b.Session.SessionDateTime.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>@b.Session.Room?.RoomName</td>
+                        <td>@b.Status</td>
+                        <td>
+                            @if (b.Status == BookingStatus.CheckedIn)
+                            {
+                                <span class="badge badge-success">✔ @b.CheckInTime?.ToString("HH:mm")</span>
+                            }
+                            else if (b.Status == BookingStatus.Canceled)
+                            {
+                                <span class="badge badge-secondary">Canceled</span>
+                            }
+                            else
+                            {
+                                <form asp-controller="Receptionist" asp-action="CheckInMember" method="post"
+                                    style="display:inline;">
+                                    <input type="hidden" name="bookingId" value="@b.BookingId" />
+                                    <button class="btn btn-sm btn-success" type="submit">Check In</button>
+                                </form>
+                            }
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
