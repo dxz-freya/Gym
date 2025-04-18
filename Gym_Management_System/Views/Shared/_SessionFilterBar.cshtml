@@ -1,9 +1,9 @@
 @model GymManagement.ViewModels.SessionFilterBarViewModel
 
 <form method="get" id="filterForm" class="d-flex flex-wrap justify-content-start align-items-center gap-3">
-    <!-- Dropdown -->
+    <!-- Branch Dropdown -->
     <select class="form-select px-4 py-2 rounded-4 border-0 shadow-sm"
-            style="background-color: #f5f5f5; min-width: 200px;"
+            style="background-color: #f5f5f5; min-width: 200px;  margin:1rem"
             name="branch"
             onchange="document.getElementById('filterForm').submit()">
         <option value="">All Branches</option>
@@ -15,15 +15,31 @@
         }
     </select>
 
-    <!-- Search Bar -->
-    <div class="position-relative d-flex align-items-center"
-         style="background-color: #f5f5f5; border-radius: 20px; padding-left: 2.5rem; min-width: 280px;">
-        <i class="bi bi-search position-absolute" style="left: 1rem; color: #bbb;"></i>
-        <input type="text"
-               name="search"
-               placeholder="Search"
-               class="form-control border-0 bg-transparent shadow-none"
-               style="padding-left: 0; background-color: transparent;"
-               value="@Model.SearchTerm" />
-    </div>
+    <!-- Session Name Dropdown -->
+    <select class="form-select px-4 py-2 rounded-4 border-0 shadow-sm"
+            style="background-color: #f5f5f5; min-width: 200px; margin:1rem"
+            name="selectedSessionName"
+            onchange="document.getElementById('filterForm').submit()">
+        <option value="">All Sessions</option>
+        @foreach (var name in Model.SessionNames.Distinct())
+        {
+            <option value="@name" selected="@(name == Model.SelectedSessionName ? "selected" : null)">
+                @name
+            </option>
+        }
+    </select>
+
+    <!-- Trainer Name Dropdown -->
+    <select class="form-select px-4 py-2 rounded-4 border-0 shadow-sm"
+            style="background-color: #f5f5f5; min-width: 200px;  margin:1rem"
+            name="selectedTrainerName"
+            onchange="document.getElementById('filterForm').submit()">
+        <option value="">All Trainers</option>
+        @foreach (var trainer in Model.TrainerNames.Distinct())
+        {
+            <option value="@trainer" selected="@(trainer == Model.SelectedTrainerName ? "selected" : null)">
+                @trainer
+            </option>
+        }
+    </select>
 </form>

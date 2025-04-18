@@ -9,11 +9,12 @@
 <h5 class="text-muted mb-4">Dashboard / <span class="fw-bold text-dark">Book a class</span></h5>
 
 <div class="card p-4 mb-5 w-100" style="background-color: #ffffff; border-radius: 24px; box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);">
-    @await Html.PartialAsync("_SessionFilterBar", new SessionFilterBarViewModel {
+    @* @await Html.PartialAsync("_SessionFilterBar", new SessionFilterBarViewModel {
         Branches = ViewBag.Branches as List<string> ?? new List<string>(),
         SelectedBranch = ViewBag.SelectedBranch as string ?? "",
         SearchTerm = ViewBag.SearchTerm as string ?? ""
-    })
+    }) *@
+    @await Html.PartialAsync("_SessionFilterBar", ViewBag.FilterBarViewModel as SessionFilterBarViewModel)
 
     <div class="table-responsive">
         <table class="table align-middle">
@@ -43,6 +44,7 @@
                     <tr class="@(isDisabled ? "text-muted opacity-75" : "")">
                         <td>@session.ClassName</td>
                         <td>@session.SessionDateTime?.ToString("HH:mm / MMM dd, yyyy", System.Globalization.CultureInfo.InvariantCulture)</td>
+
                         <td>@session.RoomName</td>
                         <td>@session.BranchName</td>
                         <td>@session.TrainerName</td>
